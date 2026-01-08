@@ -35,15 +35,17 @@ echo "Starting MCP WakaTime Server (auth-protected)..."
 echo "  Auth proxy: :8770"
 echo "  MCP server: :8767"
 
-# Activate virtual environment if it exists
-if [ -d "$PROJECT_DIR/.venv" ]; then
-    source "$PROJECT_DIR/.venv/bin/activate"
+if ! command -v uv >/dev/null 2>&1; then
+    echo "Error: uv is required but not installed."
+    echo "Install uv: https://docs.astral.sh/uv/"
+    exit 1
 fi
 
-# Start MCP server via mcp-proxy
 cd "$PROJECT_DIR"
+uv sync --frozen --no-install-project
+
 WAKATIME_API_KEY="$WAKATIME_API_KEY" mcp-proxy --port=8767 --host=127.0.0.1 --stateless --allow-origin '*' --pass-environment \
-  -- python -c "import sys; sys.path.insert(0, 'src'); from server import mcp; mcp.run()" &
+  -- uv run -- python -c "import sys; sys.path.insert(0, 'src'); from server import mcp; mcp.run()" &
 MCP_PID=$!
 
 sleep 3
@@ -53,7 +55,8 @@ MCP_AUTH_KEY="$MCP_AUTH_KEY" "$SCRIPT_DIR/caddy" run --config "$SCRIPT_DIR/Caddy
 CADDY_PID=$!
 
 echo "Ready! Endpoints:"
-echo "  Local: http://localhost:8770/sse"
+echo "  Local (SSE):  http://localhost:8770/sse"
+echo "  Local (HTTP): http://localhost:8770/mcp"
 echo ""
 echo "For public access, set up Tailscale Funnel or your preferred reverse proxy."
 

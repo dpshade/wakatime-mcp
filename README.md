@@ -27,21 +27,17 @@ Configure via environment variables (or a `.env` file for the self-hosted script
 
 ## Development (Direct mode)
 
-1. **Install**
+1. **Install (uv required)**
    ```bash
    git clone https://github.com/dpshade/wakatime-mcp.git
    cd wakatime-mcp
 
-   python -m venv .venv
-   source .venv/bin/activate
-
-   pip install -r requirements.txt
+   uv sync --no-install-project
    ```
 
 2. **Run**
    ```bash
-   export WAKATIME_API_KEY="your_wakatime_api_key_here"
-   python src/server.py
+   WAKATIME_API_KEY="your_wakatime_api_key_here" uv run -- python src/server.py
    ```
 
 3. **Connect**

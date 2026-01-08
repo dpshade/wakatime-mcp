@@ -113,40 +113,17 @@ docker-compose up -d
 
 ## Usage Examples
 
-### Get Last 7 Days Stats
-
-```
-Tool: get_coding_stats
-Args: {"range": "last_7_days"}
-```
-
-### Get Today's Summary
-
-```
-Tool: get_summary
-Args: {}
-```
-
-### Get All-Time Stats
-
-```
-Tool: get_all_time
-Args: {}
-```
-
-### Get Current Status
-
-```
-Tool: get_status_bar
-Args: {}
-```
-
-### List Projects
-
-```
-Tool: list_projects
-Args: {"query": "react"}
-```
+| Tool | Example Args | Description |
+|------|--------------|-------------|
+| `get_coding_stats` | `{"range": "last_7_days"}` | Get stats for last 7 days |
+| `get_coding_stats` | `{"range": "last_30_days"}` | Get stats for last 30 days |
+| `get_summary` | `{}` | Get yesterday + today activity |
+| `get_summary` | `{"start_date": "2026-01-01", "end_date": "2026-01-07"}` | Get specific date range |
+| `get_all_time` | `{}` | Get total time since account creation |
+| `get_all_time` | `{"project": "my-project"}` | Get all-time for specific project |
+| `get_status_bar` | `{}` | Get current coding status |
+| `list_projects` | `{}` | List all projects |
+| `list_projects` | `{"query": "react"}` | Search projects by name |
 
 ## Rate Limits
 

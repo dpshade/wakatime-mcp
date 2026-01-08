@@ -1,0 +1,43 @@
+{
+	admin off
+}
+
+:8770 {
+	header {
+		Access-Control-Allow-Origin *
+		Access-Control-Allow-Methods "GET, POST, OPTIONS"
+		Access-Control-Allow-Headers "Content-Type, Authorization, X-API-Key, Api-Key, Accept, Mcp-Session-Id"
+		Access-Control-Max-Age 86400
+	}
+
+	@options method OPTIONS
+	handle @options {
+		respond 204
+	}
+
+	@bearer header Authorization "Bearer {$MCP_AUTH_KEY}"
+	@xapikey header X-API-Key "{$MCP_AUTH_KEY}"
+	@apikey header Api-Key "{$MCP_AUTH_KEY}"
+
+	handle @bearer {
+		reverse_proxy localhost:8767 {
+			flush_interval -1
+		}
+	}
+
+	handle @xapikey {
+		reverse_proxy localhost:8767 {
+			flush_interval -1
+		}
+	}
+
+	handle @apikey {
+		reverse_proxy localhost:8767 {
+			flush_interval -1
+		}
+	}
+
+	handle {
+		respond "Unauthorized" 401
+	}
+}

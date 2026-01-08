@@ -1,0 +1,17 @@
+[Unit]
+Description=MCP WakaTime Auth Proxy (Caddy)
+After=network-online.target mcp-wakatime.service
+Wants=network-online.target
+Requires=mcp-wakatime.service
+
+[Service]
+Type=simple
+User=%USER%
+EnvironmentFile=%PROJECT_DIR%/.env
+WorkingDirectory=%PROJECT_DIR%/deploy
+ExecStart=%PROJECT_DIR%/deploy/caddy run --config %PROJECT_DIR%/deploy/Caddyfile
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

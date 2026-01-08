@@ -1,0 +1,17 @@
+[Unit]
+Description=MCP WakaTime Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=%USER%
+Environment=PATH=%HOME%/.local/bin:/usr/local/bin:/usr/bin
+EnvironmentFile=%PROJECT_DIR%/.env
+WorkingDirectory=%PROJECT_DIR%
+ExecStart=%HOME%/.local/bin/mcp-proxy --port=8767 --host=127.0.0.1 --stateless --allow-origin * --pass-environment -- %PROJECT_DIR%/.venv/bin/python -c "import sys; sys.path.insert(0, 'src'); from server import mcp; mcp.run()"
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

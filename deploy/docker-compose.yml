@@ -1,0 +1,10 @@
+services:
+  mcp-wakatime:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8767:8080"
+    env_file:
+      - ../.env
+    restart: unless-stopped
